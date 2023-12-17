@@ -1,8 +1,5 @@
-
-
-import './Todo.css'
-function App() {
- 
+import './Auth.css'
+function SideBar() {
   const logout =()=>{
 
     localStorage.removeItem("email");
@@ -29,16 +26,15 @@ function App() {
           <p className="nav-link" >{localStorage.getItem('email')}</p>
      
 
-
       
-          <a className="nav-link" href="/todo"><i className="fa fa-calendar" aria-hidden="true"></i> Today</a>
+          <a className="nav-link" href="http://localhost:5174/todo"><i className="fa fa-calendar" aria-hidden="true"></i> Today</a>
         
-          <a className="nav-link" href="/done"><i className="fa fa-check" aria-hidden="true"></i> Done</a>
+          <a className="nav-link" href="http://localhost:5174/done"><i className="fa fa-check" aria-hidden="true"></i> Done</a>
 </li>
 
         
         <li className="nav-item add">
-        <a className="nav-link " href='#' onClick={logout} >
+        <a className="nav-link " href="#" onClick={logout} >
                                        <i className="fa fa-sign-out" aria-hidden="true"></i> Logout
                                     </a>
 
@@ -56,4 +52,4 @@ function App() {
   )
 }
 
-export default App
+export default SideBar

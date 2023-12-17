@@ -1,8 +1,36 @@
 import './Auth.css'
 //import App from '../../Todo-App-Front/src/App'
+import { useRef } from 'react';
+
 import App from './App';
 function SignUp()
-{
+{const usernameRef = useRef();
+    const passwordRef = useRef();
+    const emailRef = useRef();
+    function Sign(){
+        const requestOptions = {
+            method: "POST",
+           withCredentials: true,
+            headers: { "Content-Type": "application/json",
+                       "Access-Control-Allow-Origin":" http://localhost:5173/",
+                       "Access-Control-Allow-Credentials": "true"
+                       },
+            body: JSON.stringify({
+                username: usernameRef.current.value,
+
+                email: emailRef.current.value,
+                password: passwordRef.current.value,
+               
+            }),
+        
+          };
+         fetch("http://localhost:5001/signup",requestOptions)
+        .then((response)=>response.json())
+      .then((data)=>{console.log(data);
+     
+
+    })
+    }
   return (
    <>
    <App></App>
@@ -10,25 +38,25 @@ function SignUp()
    <div className="signbx">
    <div className="row mb-3">
    <div className="col-md-6">
-   <input id="name" placeholder="Name" type="text" className="form-control " name="name"  required ></input>
+   <input id="name" placeholder="Name" type="text" className="form-control " name="name"  required ref={usernameRef}></input>
    </div>
    </div>
    <div className="row mb-3">
 
 <div className="col-md-6">
-    <input id="email" placeholder="Email Address" type="email" className="form-control " name="email"  required ></input>
+    <input id="email" placeholder="Email Address" type="email" className="form-control " name="email"  required ref={emailRef}></input>
 </div>
 </div>         
 
 <div className="row mb-3">
 
 <div className="col-md-6">
-<input id="password" placeholder="Password" type="password" className="form-control" name="password" required ></input>
+<input id="password" placeholder="Password" type="password" className="form-control" name="password" required ref={passwordRef}></input>
 </div>
 </div>
 <div className="row mb-0">
                             <div className="col-md-6 offset-md-4">
-                                <button type="submit" className="btn btn-primary register ">
+                                <button onClick={Sign} type="submit" className="btn btn-primary register ">
                                     Register
                                 </button>
                             </div>

@@ -1,37 +1,76 @@
-import './Auth.css'
-//import App from '../../Todo-App-Front/src/App'
+import './Auth.css';
 import App from './App';
-function Login()
-{
+import { useRef, useState } from 'react';
+import SideBar from './Sidebar_AfterLogin';
+
+function Login() {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const loggedIn = localStorage.getItem('email') !== null;
+  const [userData, setUserData] = useState(null);
+
+  async function log(e) {
+    e.preventDefault();
+
+    try {
+      const requestOptions = {
+        method: 'POST',
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        }),
+      };
+
+      const response = await fetch('http://localhost:5001/login', requestOptions);
+      const data = await response.json();
+
+      if (response.ok) {
+       
+        setUserData(data);
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('email', data.email);
+
+        // Redirect to Todo-App microfrontend with the token
+        window.location.href = `http://localhost:5174/todo?email=${data.email}`;
+      } else {
+        console.error('Login failed:', data.error);
+    
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    
+    }
+  }
+
   return (
-   <>
-   <App></App>
-   <p className="typewriter">To access to the application ! Please Sign In to your Account !</p>
-   <div className="signbx">
+    <>
+      {loggedIn ? <SideBar /> : <App />}
+      <p className="typewriter">To access the application, please Sign In to your Account!</p>
+      <div className="signbx">
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <input id="email" placeholder="Email Address" type="email" className="form-control" name="email" required ref={emailRef} />
+          </div>
+        </div>
 
-   <div className="row mb-3">
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <input id="password" placeholder="Password" type="password" className="form-control" name="password" required ref={passwordRef} />
+          </div>
+        </div>
 
-<div className="col-md-6">
-    <input id="email" placeholder="Email Address" type="email" className="form-control " name="email"  required ></input>
-</div>
-</div>         
-
-<div className="row mb-3">
-
-<div className="col-md-6">
-<input id="password" placeholder="Password" type="password" className="form-control" name="password" required ></input>
-</div>
-</div>
-<div className="row mb-0">
-                            <div className="col-md-6 offset-md-4">
-                                <button type="submit" className="btn btn-primary register ">
-                                    Login
-                                </button>
-                            </div>
-                        </div>
-</div>
-
-   </>
-  )
+        <div className="row mb-0">
+          <div className="col-md-6 offset-md-4">
+            <button onClick={log} type="submit" className="btn btn-primary register">
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
+
 export default Login;

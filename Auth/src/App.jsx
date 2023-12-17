@@ -1,5 +1,10 @@
 import './Auth.css'
 function App() {
+  const logout =()=>{
+
+    localStorage.removeItem("email");
+   
+   }
   return (
     <>
   <nav className="navbar">
@@ -30,7 +35,7 @@ function App() {
 
         
         <li className="nav-item add">
-        <a className="nav-link " >
+        <a className="nav-link " href="#" onClick={logout} >
                                        <i className="fa fa-sign-out" aria-hidden="true"></i> Logout
                                     </a>
 

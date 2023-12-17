@@ -126,10 +126,13 @@
     right: 25%;
    
   }
-  .taskname{
+.tasklist{
   position: absolute;
   top: 12%;
   left: 25%;
+}
+  .taskname{
+
   width: 451px;
   height: 54px;
   background: #FFFFFF;
