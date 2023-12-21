@@ -1,41 +1,37 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: TodoMicroFront
+  name: todo-front-app
 spec:
-  replicas: 1  # Number of desired replicas for the frontend pods
+  replicas: 1
   selector:
     matchLabels:
-      app: TodoMicroFront  # The label used to select the pods belonging to this deployment
+      app: todo-front-app
   template:
     metadata:
       labels:
-        app: TodoMicroFront  # The label applied to the pods created from this template
+        app: todo-front-app
     spec:
       containers:
-        - name: TodoMicroFront
-          image: louaykharouf/filesrepo:frontend
-          #command: ["start.sh"] # Use the start.sh script as the entry point (Uncomment if needed)
-          workingDir: /srv/app  # Set the working directory inside the container (Uncomment if needed)
+        - name: todo-front-app-container
+          image: louaykharouf/todomicrofront
           ports:
-            - containerPort: 5174  # The port on which your frontend application runs inside the container
-          #volumeMounts:
-          # - name: frontend-volume
-          #   mountPath: /srv/app
-      #volumes:
-       #- name: frontend-volume
-        # hostPath:
-          # path: "../FrontEnd"  # Use the correct path to your frontend files (Uncomment if needed)
+            - containerPort: 5174
 
 ---
+
+# service.yaml
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: TodoMicroFront-svc
+  name: todo-front-app-service
 spec:
-  type: LoadBalancer  # Expose the service externally using a load balancer
-  ports:
-  - port: 5174  # Port exposed by the service
   selector:
-    app: TodoMicroFront # Label selector to target the pods with the 'app: frontend' label
+    app: todo-front-app
+  ports:
+    - protocol: TCP
+      port: 5174
+      targetPort: 5174
+  type: LoadBalancer
